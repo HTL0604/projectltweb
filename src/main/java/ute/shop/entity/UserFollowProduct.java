@@ -20,15 +20,15 @@ public class UserFollowProduct {
 	private int _id;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id", nullable = false) // Foreign key to User
+	@JoinColumn(name = "user_id", nullable = false) // Foreign key đến User
 	private User user;
 
 	@ManyToOne
-	@JoinColumn(name = "product_id", referencedColumnName = "_id", nullable = false)
-	private Product product; // Reference to Product
+	@JoinColumn(name = "product_id", referencedColumnName = "_id", nullable = false, insertable = false, updatable = false)
+	private Product product; // Tham chiếu đến Product
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(updatable = false, nullable = false)
+	@Column(updatable = false)
 	private Date createdAt;
 
 	@Temporal(TemporalType.TIMESTAMP)

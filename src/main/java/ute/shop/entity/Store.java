@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,91 +18,99 @@ import java.util.List;
 @NamedQuery(name = "Store.findAll", query = "SELECT s FROM Store s")
 public class Store {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int _id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int _id;
 
-	@Column(nullable = false, unique = true, length = 100)
-	private String name;
+    @Column(nullable = false, unique = true, length = 100)
+    private String name;
 
-	@Column(length = 255)
-	private String bio;
+    @Column(length = 255)
+    private String bio;
 
-	@Column(unique = true)
-	private String slug;
+    @Column(unique = true)
+    private String slug;
 
-	@OneToOne
-	@JoinColumn(name = "owner_id", referencedColumnName = "_id", nullable = false)
-	private User owner;
+    @OneToOne
+    @JoinColumn(name = "ownerId", referencedColumnName = "_id", nullable = false)
+    @ToString.Exclude
+    private User owner;
 
-	@ManyToMany
-	@JoinTable(name = "store_staff", joinColumns = @JoinColumn(name = "store_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-	private List<User> staffs;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "store_staff", joinColumns = @JoinColumn(name = "store_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> staffs;
 
-	@Column(nullable = false)
-	private Boolean isActive = true;
+    @Column(nullable = false)
+    private Boolean isActive = true;
 
-	@Column(nullable = false)
-	private Boolean isOpen = true;
+    @Column(nullable = false)
+    private Boolean isOpen = true;
 
-	private String avatar;
-	private String cover;
+    private String avatar;
+    private String cover;
 
-	@ElementCollection
-	private List<String> featuredImages;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> featuredImages;
 
-	@Column(nullable = false)
-	private Double commissionSold;
+    @Column(nullable = false)
+    private Double commissionSold;
 
-	private Integer point;
-	private Double rating;
+    private Integer point;
+    private Double rating;
 
-	@Column(nullable = false)
-	private double e_wallet = 0.0;
+    @Column(nullable = false)
+    private double e_wallet = 0.0;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(updatable = false)
-	private Date createdAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(updatable = false)
+    private Date createdAt;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date updatedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
 
-	@PrePersist
-	protected void onCreate() {
-		createdAt = new Date();
-		if (this.slug == null || this.slug.isEmpty()) {
-			this.slug = name.toLowerCase().replace(" ", "-");
-		}
-	}
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+    }
 
-	@PreUpdate
-	protected void onUpdate() {
-		updatedAt = new Date();
-	}
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = new Date();
+    }
 
-	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
-	private List<Product> products = new ArrayList<>();
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Product> products = new ArrayList<>();
 
-	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
-	private List<Order> orders = new ArrayList<>();
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Order> orders = new ArrayList<>();
 
-	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
-	private List<Cart> carts = new ArrayList<>();
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Cart> carts = new ArrayList<>();
 
-	@OneToMany(mappedBy = "store")
-	private List<Review> reviews = new ArrayList<>();
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<Review> reviews = new ArrayList<>();
 
-	@OneToOne
-	@JoinColumn(name = "storeLevel_id", referencedColumnName = "_id", nullable = false)
-	private StoreLevel storeLevel;
+    @OneToOne
+    @JoinColumn(name = "commission_id", referencedColumnName = "_id", nullable = false)
+    private Commission commission;
 
-	@OneToOne
-	@JoinColumn(name = "commission_id", referencedColumnName = "_id", nullable = false)
-	private Commission commission;
+    @OneToMany(mappedBy = "store")
+    private List<UserFollowStore> followers = new ArrayList<>();
 
-	@OneToMany(mappedBy = "store")
-	private List<UserFollowStore> followers = new ArrayList<>();
-
-	@OneToMany(mappedBy = "store")
-	private List<Transaction> transactions = new ArrayList<>();
+    @OneToMany(mappedBy = "store")
+    private List<Transaction> transactions = new ArrayList<>();
+    
+    @Override
+    public String toString() {
+        return "Store{" +
+                "_id=" + _id +
+                ", name='" + name + '\'' +
+                ", bio='" + bio + '\'' +
+                ", slug='" + slug + '\'' +
+                ", commissionId=" + (commission != null ? commission.get_id() : "null") +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }

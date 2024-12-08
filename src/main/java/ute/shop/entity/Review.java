@@ -21,28 +21,28 @@ public class Review {
 
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "_id", nullable = false)
-	private User user; // Reference to User
+	private User user; // Tham chiếu đến User
 
 	@ManyToOne
 	@JoinColumn(name = "product_id", referencedColumnName = "_id", nullable = false)
-	private Product product; // Reference to Product
+	private Product product; // Tham chiếu đến Product
 
 	@ManyToOne
 	@JoinColumn(name = "store_id", referencedColumnName = "_id", nullable = false)
-	private Store store; // Reference to Store
+	private Store store; // Tham chiếu đến Store
 
 	@ManyToOne
 	@JoinColumn(name = "order_id", referencedColumnName = "_id", nullable = false)
-	private Order order; // Reference to Order
+	private Order order; // Tham chiếu đến Order
 
 	@Column(nullable = false, length = 1000)
-	private String content; // Review content
+	private String content; // Nội dung đánh giá
 
 	@Column(nullable = false)
-	private int stars; // Rating in stars (you might consider using Integer if null values are allowed)
+	private int stars; // Số sao đánh giá
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(updatable = false, nullable = false)
+	@Column(updatable = false)
 	private Date createdAt;
 
 	@Temporal(TemporalType.TIMESTAMP)

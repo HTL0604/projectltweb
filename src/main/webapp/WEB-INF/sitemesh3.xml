@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <sitemesh>
-  <mapping path="/*" decorator="web.jsp"/>
-  <mapping path="/user/*" decorator="user.jsp"/>
-  <mapping path="/admin/*" decorator="admin.jsp"/>
-   <mapping path="/v1/api/*" exclude="true"/>
+    <!-- Áp dụng decorator mặc định -->
+     <excludes>
+        <pattern>/vendor/stores</pattern>
+    </excludes>
+    <mapping path="/*" decorator="web.jsp"/>
+
+    <!-- Áp dụng decorator cho /user/ -->
+    <mapping path="/user/*" decorator="user.jsp"/>
+
+    <!-- Áp dụng decorator cho /vendor/home -->
+    <mapping path="/vendor/home" decorator="vendor.jsp"/>
+
+    <!-- Loại trừ URL /vendor/stores khỏi Sitemesh -->
+   
+
+    <!-- Áp dụng decorator cho /admin/ -->
+    <mapping path="/admin/*" decorator="admin.jsp"/>
+
+    <!-- Loại trừ đường dẫn API /v1/api/* -->
+    <mapping path="/v1/api/*" exclude="true"/>
 </sitemesh>

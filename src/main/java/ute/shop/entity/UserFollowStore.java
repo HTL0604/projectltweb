@@ -28,7 +28,7 @@ public class UserFollowStore {
 	private Store store; // Reference to Store
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(updatable = false, nullable = false)
+	@Column(updatable = false)
 	private Date createdAt;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -37,6 +37,7 @@ public class UserFollowStore {
 	@PrePersist
 	protected void onCreate() {
 		createdAt = new Date();
+		updatedAt = new Date();
 	}
 
 	@PreUpdate

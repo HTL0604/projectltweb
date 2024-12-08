@@ -49,6 +49,7 @@ public class StoreLevel {
 	}
 
 	// Optional: One-to-One relationship with Store
-	@OneToOne(mappedBy = "storeLevel")
-	private Store store;
+	
+	
+	
 }

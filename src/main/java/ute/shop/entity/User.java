@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.Date;
 import java.util.List;
@@ -77,7 +78,7 @@ public class User {
 	}
 
 	public enum Role {
-		USER, ADMIN;
+		USER, ADMIN, VENDOR;
 
 		public static Role fromString(String role) {
 			return Role.valueOf(role.toUpperCase());
@@ -89,21 +90,25 @@ public class User {
 	private Store ownedStore;
 
 	@ManyToMany(mappedBy = "staffs")
+	@ToString.Exclude
 	private List<Store> staffedStores;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Transaction> transactions;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ToString.Exclude
 	private List<Review> reviews = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<UserFollowStore> userFollowStores = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ToString.Exclude
 	private List<Order> orders = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ToString.Exclude
 	private List<Cart> carts = new ArrayList<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

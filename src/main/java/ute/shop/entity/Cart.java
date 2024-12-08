@@ -21,20 +21,19 @@ public class Cart {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int _id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "_id", nullable = false)
-	private User user;
+	private User user; // Tham chiếu đến User
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "store_id", nullable = false)
-	private Store store;
+	private Store store; // Tham chiếu tới Store
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false, updatable = false)
+	@Column(updatable = false)
 	private Date createdAt;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false)
 	private Date updatedAt;
 
 	@PrePersist
@@ -49,5 +48,5 @@ public class Cart {
 	}
 
 	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<CartItem> cartItems = new ArrayList<>(); // Một Cart có thể có nhiều CartItem
+	private List<CartItem> cartItems = new ArrayList<>(); // Một Cart có thể có nhiều CartItem		
 }

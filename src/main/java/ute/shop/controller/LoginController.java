@@ -2,6 +2,7 @@ package ute.shop.controller;
 
 import java.io.IOException;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
@@ -21,7 +22,8 @@ public class LoginController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
+		RequestDispatcher rd = req.getRequestDispatcher("/views/login.jsp");
+		rd.forward(req, resp);
 	}
 
 	@Override
@@ -48,7 +50,6 @@ public class LoginController extends HttpServlet {
 			// Lưu thông tin người dùng vào session
 			HttpSession session = req.getSession(true);
 			session.setAttribute("account", user);
-			session.setAttribute("userId", user.get_id());
 
 			// Nếu người dùng chọn "Remember Me"
 			if (isRememberMe) {
@@ -56,7 +57,7 @@ public class LoginController extends HttpServlet {
 			}
 
 			// Điều hướng đến trang đích chính (ví dụ: trang chủ hoặc dashboard)
-			resp.sendRedirect(req.getContextPath() + "/home"); // Thay "/home" bằng trang đích thực tế
+			resp.sendRedirect(req.getContextPath() + "/waiting"); // Thay "/home" bằng trang đích thực tế
 		} else {
 			alertMsg = "Tài khoản hoặc mật khẩu không đúng";
 			req.setAttribute("alert", alertMsg);

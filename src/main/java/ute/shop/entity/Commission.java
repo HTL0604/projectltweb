@@ -55,4 +55,17 @@ public class Commission {
 
 	@OneToMany(mappedBy = "commission", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Order> orders; // Một Commission có thể có nhiều Order
+	
+	@Override
+    public String toString() {
+        return "Commission{" +
+                "_id=" + _id +
+                ", cost=" + cost +
+                ", description='" + description + '\'' +
+                ", isDeleted=" + isDeleted +
+                ", name='" + name + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }
